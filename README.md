@@ -2,8 +2,11 @@
 Advanced Cloud Computing
 
 ## Labs
-- [**Lab 1**](labs/lab01/README.md) - Reference Architecture 1 (due 1/23/26)
-- Lab 2
+
+### Required (all students)
+
+- [**Lab 1**](labs/lab01/README.md) - Reference Architecture 1 (due 1/23/2026)
+- [**Lab 2**](labs/lab02/README.md) - Creating & Managing EC2 Instances (due 1/30/2026)
 - Lab 3
 - Lab 4
 - Lab 5
@@ -13,8 +16,10 @@ Advanced Cloud Computing
 - Lab 9
 - Lab 10
 
-Graduate Students only, completed by end of semester:
-- Lab 11
+### Graduate Student Labs
+
+To be completed by end of semester:
+- [**Grad Lab 11**](labs/glab11/README.md) - Run A Hypervisor
 - Lab 12
 - Lab 13
 - Lab 14

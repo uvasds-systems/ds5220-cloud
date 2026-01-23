@@ -14,7 +14,7 @@ By the end of this lab, you will be able to:
 
 - An AWS account with appropriate permissions
 - AWS CLI installed and configured on your local machine with your security credentials. [Watch this video](https://youtu.be/uUSZSyxbv80) for how to set this up if you have not already.
-- Python 3.9+ with `boto3` installed (`pip install boto3`)
+- Python 3.10+ with `boto3` installed (`pip install boto3`)
 - An SSH client (built into macOS/Linux, use PuTTY or WSL on Windows)
 
 ## Setup: Configure Your AWS Region
@@ -44,7 +44,7 @@ aws configure get region
 
 Your Python scripts will automatically use `us-east-1` if configured above, but you can also specify it explicitly in code (we'll show this later).
 
-## Part 1: Creating an EC2 Instance via AWS Console (25 minutes)
+## Part 1: Creating an EC2 Instance via the AWS Console (25 minutes)
 
 ### What is EC2?
 
@@ -249,7 +249,7 @@ Before moving on, make sure you understand:
 - Why do you need the private key file to connect?
 - What happens to your data volume if you terminate the instance?
 
-## Part 2: Creating an EC2 Instance via AWS CLI (15 minutes)
+## Part 2: Creating an EC2 Instance via the AWS CLI (15 minutes)
 
 Now let's automate the same process using the command line.
 
@@ -275,6 +275,7 @@ AMI_ID=$(aws ec2 describe-images \
   --region us-east-1)
 
 echo "Using AMI: $AMI_ID"
+export $AMI_ID
 ```
 
 ### Step 2: Create a Reusable SSH Security Group
@@ -310,6 +311,8 @@ echo "SSH security group ID: $SSH_SG_ID"
 ```
 
 ### Step 3: Create a New Instance with an Additional Volume
+
+Be sure to update the `--key-name` to match your key.
 
 ```bash
 # Launch the instance with block device mapping for additional storage
@@ -402,7 +405,7 @@ aws ec2 describe-volumes \
 # aws ec2 delete-volume --volume-id vol-xxxxxxxxxxxxx --region us-east-1
 ```
 
-## Part 3: Creating an EC2 Instance with Boto3 (20 minutes)
+## Part 3: Creating an EC2 Instance with `boto3` (20 minutes)
 
 Now let's do the same thing programmatically with Python.
 
@@ -646,6 +649,16 @@ Key concepts:
 5. **Detach** → Disconnect from instance (state: available again)
 6. **Delete** → Permanently destroy the volume
 
+
+## Submit
+
+Submit a short log snapshot that shows you launched, connected, and attached storage. Include:
+
+- The output of `aws ec2 describe-instances --instance-ids <INSTANCE_ID> --query 'Reservations[0].Instances[0].[InstanceId,PublicIpAddress,SecurityGroups]' --output table`
+- The output of `lsblk` after you mounted the data volume
+- The output of `df -h /data`
+
+
 ## Clean Up
 
 Before you finish, make sure to clean up all resources:
@@ -707,10 +720,7 @@ You now understand:
 - **Volume management**: Creating, attaching, formatting, and mounting volumes
 - **SSH key pairs**: How to securely access your instances
 - **Regional operations**: Working consistently in `us-east-1`
-
-## Submit
-
-Take a screenshot of the login screen for one of the instances you created. Submit that to verify completion of this lab.
+  
 
 ## Next Steps
 
