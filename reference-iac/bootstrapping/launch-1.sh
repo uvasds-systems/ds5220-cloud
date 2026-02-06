@@ -8,4 +8,4 @@ aws ec2 run-instances \
   --instance-type t3.micro \
   --key-name ds5220 \
   --security-group-ids sg-066412c1406b41de3 \
-  --user-data file://bootstrap.sh
+  --user-data file://bootstrap-1.sh

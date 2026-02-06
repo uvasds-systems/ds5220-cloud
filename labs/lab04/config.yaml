@@ -1,0 +1,9 @@
+region: us-east-1
+bucket_name: your-bucket-name-12345
+instance:
+  ami_id: ami-0b6c6ebed2801a5cb # ubuntu 24.04lts
+  instance_type: m7i.large
+  key_name: your-key-name
+  security_group_id: sg-12345
+  role_name: EC2-S3-Instance-Role
+  instance_profile_name: EC2-S3-Instance-Profile
