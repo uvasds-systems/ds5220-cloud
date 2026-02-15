@@ -268,6 +268,7 @@ echo "test data" > data.txt
 aws s3 cp data.txt s3://YOUR-BUCKET-NAME/
 
 # This should trigger a notification
+mkdir -p subfolder
 echo "more,test,data" > subfolder/nested.csv
 aws s3 cp subfolder/nested.csv s3://YOUR-BUCKET-NAME/subfolder/
 ```
