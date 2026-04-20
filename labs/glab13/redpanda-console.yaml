@@ -54,8 +54,7 @@ spec:
               memory: "256Mi"
               cpu: "250m"
           readinessProbe:
-            httpGet:
-              path: /api/health
+            tcpSocket:
               port: 8080
             initialDelaySeconds: 10
             periodSeconds: 5
