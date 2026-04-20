@@ -11,6 +11,7 @@ metadata:
     app: kafka
 spec:
   clusterIP: None
+  publishNotReadyAddresses: true
   ports:
     - name: broker
       port: 9092
@@ -118,32 +119,41 @@ spec:
 
               # Listeners & advertised listeners
               export KAFKA_LISTENERS="PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093"
-              export KAFKA_ADVERTISED_LISTENERS="PLAINTEXT://${POD_NAME}.kafka-headless.kafka.svc.cluster.local:9092"
+              export KAFKA_ADVERTISED_LISTENERS="PLAINTEXT://${POD_NAME}.kafka-headless.kafka.svc.cluster.local:9092,CONTROLLER://${POD_NAME}.kafka-headless.kafka.svc.cluster.local:9093"
 
               # Log directory
               export KAFKA_LOG_DIRS="/tmp/kraft-combined-logs"
 
-              # Format the storage directory (safe to re-run; exits 0 if already formatted)
+              # Build a concrete runtime config from scratch so the image
+              # defaults cannot override listener values.
+              cat > /tmp/server.properties <<EOF
+              process.roles=$KAFKA_PROCESS_ROLES
+              node.id=$KAFKA_NODE_ID
+              controller.quorum.voters=$KAFKA_CONTROLLER_QUORUM_VOTERS
+              listeners=$KAFKA_LISTENERS
+              advertised.listeners=$KAFKA_ADVERTISED_LISTENERS
+              inter.broker.listener.name=$KAFKA_INTER_BROKER_LISTENER_NAME
+              controller.listener.names=$KAFKA_CONTROLLER_LISTENER_NAMES
+              listener.security.protocol.map=$KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              log.dirs=$KAFKA_LOG_DIRS
+              num.partitions=$KAFKA_NUM_PARTITIONS
+              offsets.topic.replication.factor=$KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+              default.replication.factor=$KAFKA_DEFAULT_REPLICATION_FACTOR
+              transaction.state.log.replication.factor=3
+              transaction.state.log.min.isr=2
+              log.retention.hours=$KAFKA_LOG_RETENTION_HOURS
+              EOF
+
+              # Format the storage directory using the same runtime config
+              # Kafka will start with. This keeps node.id consistent with the
+              # stored metadata for each broker.
               /opt/kafka/bin/kafka-storage.sh format \
-                --config /opt/kafka/config/kraft/server.properties \
+                --config /tmp/server.properties \
                 --cluster-id "$CLUSTER_ID" \
                 --ignore-formatted
 
-              # Start Kafka
-              exec /opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/kraft/server.properties \
-                --override node.id=$KAFKA_NODE_ID \
-                --override process.roles=$KAFKA_PROCESS_ROLES \
-                --override controller.quorum.voters="$KAFKA_CONTROLLER_QUORUM_VOTERS" \
-                --override listeners=$KAFKA_LISTENERS \
-                --override advertised.listeners=$KAFKA_ADVERTISED_LISTENERS \
-                --override listener.security.protocol.map=$KAFKA_LISTENER_SECURITY_PROTOCOL_MAP \
-                --override inter.broker.listener.name=$KAFKA_INTER_BROKER_LISTENER_NAME \
-                --override controller.listener.names=$KAFKA_CONTROLLER_LISTENER_NAMES \
-                --override offsets.topic.replication.factor=$KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR \
-                --override default.replication.factor=$KAFKA_DEFAULT_REPLICATION_FACTOR \
-                --override num.partitions=$KAFKA_NUM_PARTITIONS \
-                --override log.retention.hours=$KAFKA_LOG_RETENTION_HOURS \
-                --override log.dirs=$KAFKA_LOG_DIRS
+              # Start Kafka from the generated runtime config.
+              exec /opt/kafka/bin/kafka-server-start.sh /tmp/server.properties
           resources:
             requests:
               memory: "512Mi"
