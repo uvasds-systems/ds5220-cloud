@@ -4,6 +4,13 @@ Choose **one** of the four projects below. Work in small groups (2–3 people) d
 
 All projects use **AWS** as the cloud provider. You'll need your course AWS account and credentials configured.
 
+**Contents**
+
+- [URL Shortener](#project-1--url-shortener)
+- [Real-time Group Chat](#project-2--real-time-group-chat)
+- [Burner Notes](#project-3--ephemeral-note-sharing-burn-after-reading)
+- [Weather Alerts](#project-4--weather-alert-subscription-service)
+
 ---
 
 ## Project 1 — URL Shortener
