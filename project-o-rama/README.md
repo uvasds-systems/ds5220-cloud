@@ -62,6 +62,20 @@ flowchart LR
 - Add a `ttl` attribute (Unix timestamp) to DynamoDB items and enable TTL on the table — links can expire automatically
 - Consider what happens if someone submits the same URL twice — do you deduplicate?
 
+### Example
+
+In this course we have been using the `l.uvasds.sh` shortener written by the instructor. This
+has a similar configuration where the `/zz-shorten` resource requires a POST of a single data
+field named `original-url` and then returns the generated short URL. The `/` zone apex resource
+is reserved for the short URLs themselves (thus keeping them shorter!).
+
+You can test your own posts against this service with
+```
+curl -X POST https://l.uvasds.sh/zz-shorten \
+  -H "Content-Type: application/json" \
+  -d '{"original-url": "https://www.kodak.com/"}'
+```
+
 ### Stretch Goals
 
 - A minimal HTML form frontend (static site on S3) so users don't need curl
