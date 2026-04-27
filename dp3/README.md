@@ -215,6 +215,9 @@ Based on previous student work I have graded for DP1 and DP2, it is important th
 - Log to track the state of your application, what it has processed, and meaningful information about errors and exceptions. This helps with debugging and monitoring. Log copiously within every step of your logic, and within all try/except branches.
 - Exception Handling is a way of identifying the specifics of an error (and recording that in logs), and hopefully handling them gracefully with retries or other logic so that your application does not end up in a completely broken state. Incorporate try/except logic within every function or operation that could potentially fail. This might be a GET request from S3, or a write operation to a local file, or an HTTP POST, etc.
 
+Resources:
+- [Error & Exception Handling in Python](https://github.com/uvasds-systems/error-handling/blob/main/python/README.md)
+- [Logging in Python](https://github.com/uvasds-systems/error-handling/blob/main/python/README.md#logging)
 
 ## Deliverables
 
