@@ -210,14 +210,14 @@ If `/project <project-id>` returns an error or shows fewer than two resources, y
 
 ## Deliverables
 
-- A **deployed** ingestion pipeline (Event/Timer + Lambda + Database/Storage) that has been running long enough to have collected real data. "I deployed it the night before" shows in the plots.
+- A **deployed** ingestion pipeline (Event/Timer + Lambda + Database/Storage) that has been running long enough to have collected real data.
 - A **deployed** Chalice API with at least three resources, registered with the course bot.
 - A short **README** in your project repo covering:
   - What data source you tracked and why.
   - How often it's sampled and what the storage schema looks like.
   - A description of each API resource and what it returns.
   - Any stretch goals you added.
-- Your **repo URL** submitted in Canvas.
+- Submit your **repo URL** in Canvas for grading.
 
 ## Stretch Goals
 
@@ -234,7 +234,7 @@ Not required — pick what's interesting to you:
 
 ## Working Example
 
-Look at the `geepeeyew` project via Discord, and notice its available resources and outputs. This project (thanks to `vpn7n`) polls the UVA high performance cluster to monitor GPU usage and availability over time. In Discord's `#dp3` channel:
+Look at the `geepeeyew` project via Discord, and notice its available resources and outputs. This project (thanks to `vpn7n`) polls the UVA high performance computing cluster to monitor GPU usage and availability over time. In Discord's `#dp3` channel:
 
 ```
 /project geepeeyew
